@@ -1,0 +1,69 @@
+{% load staticfiles %}
+{% load i18n %}
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+
+    <link rel="shortcut icon" href="{% static 'tweap/img/favicon-rocket.ico' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'tweap/style.css' %}" />
+    <link rel="stylesheet" type="text/css" href="{% static 'tweap/css/bootstrap.css' %}" />
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+    <script src="{% static 'tweap/js/bootstrap.js' %}"></script>
+    <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+    {% block css %}{% endblock %}
+    {% block js %}{% endblock %}
+    <title>{% block title %}Tweap{% endblock %}</title>
+</head>
+<body>
+    <div class="container">
+        <nav style="background-color: #337ab7;" class="navbar navbar-default navbar-fixed-top">
+            <div class="container">
+                <div class="navbar-header">
+                  <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                  </button>
+                  <a class="navbar-brand" href="{% url 'dashboard:home' %}"><i class="fa fa-rocket"></i> tweap</a>
+                </div>
+                <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                    <ul class="nav navbar-nav">
+                        {% block navigation %}{% endblock %}
+                    </ul>
+                    <ul class="nav navbar-nav pull-right">
+                        {% if user.is_authenticated %}
+                            <li><a id="navbar_profile_link" href="{% url 'user_management:profile' username %}"><i class="fa fa-user"></i> {% trans "Profile" %}</a></li>
+                            <li><a id="navbar_settings_link" href="{% url 'settings:settings' %}"><i class="fa fa-sliders"></i> {% trans "Settings" %}</a></li>
+                            <li><a id="navbar_logout_link" href="{% url 'user_management:logout' %}"><i class="fa fa-sign-out"></i> {% trans "Logout" %}</a></li>
+                        {% endif %}
+                        <li class="pull-right">
+                            <form class="input-group input-group-sm nobg" action="{% url 'set_language' %}" method="post">
+                                {% csrf_token %}
+                                <input name="next" type="hidden" value="{{ request.get_full_path|slice:'3:' }}" />
+                                <select class="form-control valign-form" name="language"  onchange="this.form.submit();">
+                                {% get_language_info_list for LANGUAGES as languages %}
+                                  {% for language in languages %}
+                                    <option value="{{ language.code }}"{% if language.code == LANGUAGE_CODE %} selected="selected"{% endif %}>
+                                      {{ language.name_local }}
+                                    </option>
+                                  {% endfor %}
+                                </select>
+                            </form>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+        <div style="margin-top: 70px">
+        {% block content %}
+
+        {% endblock %}
+        </div>
+    </div>
+</body>
+</html>

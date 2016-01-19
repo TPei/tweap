@@ -31,6 +31,7 @@ ALLOWED_HOSTS = []
 # trailing slash if there is a path component (optional in other cases).
 # Examples: "http://media.lawrence.com", "http://example.com/media/"
 MEDIA_URL = '/media/'
+#TODO: ja, hier muss irgendwie der lokale Pfad vom Server stehen
 
 # Application definition
 
@@ -47,11 +48,6 @@ INSTALLED_APPS = (
     'image_cropping',
     'easy_thumbnails',
     'dashboard',
-    'todo',
-    'notification_center',
-    'cal',
-    'debug_toolbar',
-    'chat',
     'settings',
 )
 
@@ -81,10 +77,6 @@ DATABASES = {
         'NAME': 'tweap',
         'USER': 'root',
         'PASSWORD': 'tweap',
-        'OPTIONS': {
-            'charset': 'utf8mb4',
-            'use_unicode': True,
-        },
     }
 }
 
@@ -93,13 +85,14 @@ DATABASES = {
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'Europe/Berlin'
+TIME_ZONE = 'UTC'
 
 USE_I18N = True
 
 USE_L10N = True
 
 USE_TZ = True
+
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.7/howto/static-files/
@@ -110,7 +103,7 @@ STATICFILES_DIRS = (
     os.path.join(BASE_DIR + "/tweap/", 'static'),
 )
 
-STATIC_ROOT = "/srv/teamcity/deploy/tweap/static/alpha"
+STATIC_ROOT = "/home/goggelz/STATIC_DJANGO/tweap/"
 
 TEMPLATE_DIRS = (
     os.path.join(BASE_DIR + "/tweap/",  'templates'),
@@ -126,7 +119,6 @@ LOGIN_REQUIRED_URLS = (
     r'/projects/(.*)$',
     r'/users/profile/(.*)$',
     r'/users/editprofile/$',
-    r'/users/user_suggestion/$',
     r'/settings/$',
 )
 
@@ -135,7 +127,7 @@ LOGIN_REQUIRED_URLS_EXCEPTIONS = (
 )
 
 LOCALE_PATHS = (
-    os.path.join(BASE_DIR, 'locale/'),
+    os.path.join(BASE_DIR, 'locale'),
 )
 
 LANGUAGES = (

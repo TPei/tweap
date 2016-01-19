@@ -1,0 +1,94 @@
+{% extends "project_management_template.html" %}
+{% load i18n %}
+{% block js %}
+<script>
+    $(function() {
+        $("#sortable").sortable({
+            stop: function(event, ui) {
+                givePositionalNumbers();
+            }
+        });
+        $( "#sortable" ).disableSelection();
+    });
+
+    function givePositionalNumbers() {
+        var count = 0;
+        $('.ui-state-default').each(function(){
+            console.log(count + ". " + $(this).text());
+            count++;
+        });
+    }
+</script>
+{% endblock %}
+{% block project_management_template %}
+    <div class="well well-lg panel col-md-8 col-md-offset-2">
+        <div class="row col-md-12">
+            <h1>{% trans "Settings" %}</h1>
+        </div>
+
+        <div class="row col-md-12">
+            <h2>Notification Settings</h2>
+            <p class="lead">Tell us how you want to be notified about new events!</p>
+            <div class="list-group col-md-12">
+                {% for type in event_types %}
+                    <div class="list-group-item">
+                        {{ type.description }} <br>
+                        <label>
+                            <input type="checkbox" value="email" checked>
+                            Via Email
+                        </label>
+                        <label>
+                            <input type="checkbox" value="dashboard" checked>
+                            In the dashboard
+                        </label>
+                    </div>
+                {% endfor %}
+                <div class="list-group-item">
+                    For a todo that's due today <br>
+                    <label>
+                        <input type="checkbox" value="email" checked>
+                        Via Email
+                    </label>
+                </div>
+                <div class="list-group-item">
+                    For an upcoming Event <br>
+                    <label>
+                        <input type="checkbox" value="email" checked>
+                        Via Email
+                    </label>
+                </div>
+            </div>
+        </div>
+
+        <div class="row col-md-12">
+            <h2>Project Order</h2>
+            <p class="lead">Order your projects, so whenever there's a list of your projects, this order will be kept.</p>
+
+            <ul id="sortable" class="list-group col-md-12" style="cursor: move;">
+            {% for project in projects %}
+                <li class="ui-state-default list-group-item"><span class="glyphicon glyphicon-menu-hamburger" aria-hidden="true"></span> {{project.name}}</li>
+            {% endfor %}
+            </ul>
+        </div>
+        <div class="row col-md-12">
+            <h2>Language Preference</h2>
+            <p class="lead">No matter from where you connect, your tweap will always be in this language.</p>
+            <label>
+                <input type="radio" name="language" id="optionsRadios1" value="option1" checked>
+                English
+            </label>
+            <br>
+            <label>
+                <input type="radio" name="language" id="optionsRadios2" value="option2">
+                Deutsch
+            </label>
+            <br>
+            <label>
+                <input type="radio" name="language" id="optionsRadios3" value="option3">
+                Polski
+            </label>
+        </div>
+
+        <button class="btn btn-success" style="margin-top: 12px;">Save Changes</button>
+    </div>
+{% endblock %}
